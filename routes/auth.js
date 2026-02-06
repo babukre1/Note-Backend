@@ -105,13 +105,12 @@ router.get("/logout", (req, res) => {
 
 module.exports = router;
 
-
 router.put("/editMyProfile", auth, async (req, res) => {
-  const { fullname, username } = req.body;
+  const { fullname, username, phone_number } = req.body;
   try {
     const updatedUser = await pool.query(
-      "UPDATE users SET fullname = $1, username = $2 WHERE id = $3 RETURNING id, username, fullname, role",
-      [fullname, username, req.user.id], // req.user.id comes from your adminAuth middleware
+      "UPDATE users SET fullname = $1, username = $2, phone_number = $3 WHERE id = $4 RETURNING id, username, fullname, phone_number, role",
+      [fullname, username, phone_number, req.user.id], // req.user.id comes from your adminAuth middleware
     );
     res.json({ msg: "Profile updated", user: updatedUser.rows[0] });
   } catch (err) {
