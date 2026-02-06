@@ -31,6 +31,7 @@ router.post("/signup", async (req, res) => {
       id: user.rows[0].id,
       username: user.rows[0].username,
       fullname: user.rows[0].fullname,
+      phone_number: user.rows[0].phone_number,
     };
 
     res.status(201).json({ msg: "User registered successfully" });
