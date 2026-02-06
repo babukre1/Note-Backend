@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const pool = require("../db");
+const auth = require("../middleware/auth");
 
 // @route   POST api/auth/signup
 // @desc    Register user
