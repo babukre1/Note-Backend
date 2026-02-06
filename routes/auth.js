@@ -67,6 +67,7 @@ router.post("/login", async (req, res) => {
       id: userData.id,
       username: userData.username,
       fullname: userData.fullname,
+      phone_number: userData.phone_number,
     };
 
     req.session.save((err) => {
