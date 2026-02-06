@@ -25,12 +25,12 @@ router.get("/", auth, async (req, res) => {
 // @desc    Add a new note
 // @access  Private
 router.post("/", auth, async (req, res) => {
-  const { title, body } = req.body;
+  const { title, body, favourite } = req.body;
 
   try {
     const newNote = await pool.query(
-      "INSERT INTO notes (user_id, title, body) VALUES ($1, $2, $3) RETURNING * ",
-      [req.user.id, title, body],
+      "INSERT INTO notes (user_id, title, body, favourite) VALUES ($1, $2, $3, $4) RETURNING * ",
+      [req.user.id, title, body, favourite],
     );
     res
       .status(201)
@@ -46,12 +46,12 @@ router.post("/", auth, async (req, res) => {
 // @access  Private
 router.put("/:id", auth, async (req, res) => {
   const { id } = req.params;
-  const { title, body } = req.body;
+  const { title, body, favourite } = req.body;
 
   try {
     const updatedNote = await pool.query(
-      "UPDATE notes SET title = $1, body = $2, updated_at = CURRENT_TIMESTAMP WHERE id = $3 AND user_id = $4 RETURNING * ",
-      [title, body, id, req.user.id],
+      "UPDATE notes SET title = $1, body = $2, updated_at = CURRENT_TIMESTAMP, favourite = $3 WHERE id = $4 AND user_id = $5 RETURNING * ",
+      [title, body, favourite, id, req.user.id],
     );
 
     if (updatedNote.rows.length === 0) {
