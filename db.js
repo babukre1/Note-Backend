@@ -1,13 +1,13 @@
-const Pool = require('pg').Pool;
 require('dotenv').config();
+const { Pool } = require('pg');
 
 const pool = new Pool({
-    user: process.env.DATABASE_USER,
-    host: process.env.DATABASE_HOST,
-    database: process.env.PGDATABASE, // Still using PGDATABASE for the database name variable
-    password: process.env.DATABASE_PASSWORD,
-    port: process.env.DATABASE_PORT,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false // Required for Neon/Render environments
+  }
 });
 
-module.exports = pool;
-
+module.exports = {
+  query: (text, params) => pool.query(text, params),
+};

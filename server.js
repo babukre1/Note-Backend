@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
+const db = require("./db");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -35,6 +36,16 @@ app.use("/api/admin", require("./routes/admin"));
 
 app.get("/api/", (req, res) => {
   res.send("Notes API is running!");
+});
+
+app.get('/test-db', async (req, res) => {
+  try {
+    const result = await db.query('SELECT NOW()');
+    res.json({ message: 'Connected to Neon!', time: result.rows[0] });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Database connection error');
+  }
 });
 
 app.listen(PORT, () => {
